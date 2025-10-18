@@ -51,9 +51,10 @@ All steps were performed on Indiana University’s Slate HPC system, using a Con
 
 4. QUAST Results: Contains detailed evaluation reports for Velvet and Oases assemblies.
 https://github.com/APriya-spec/FA25-GENOMIC-DATA-ANAL-PRECIS-MED-25515/blob/Asg-1/oases_summary.zip
+
 https://github.com/APriya-spec/FA25-GENOMIC-DATA-ANAL-PRECIS-MED-25515/blob/Asg-1/velvet_summary.zip
 
-5. Logs folder: Includes run logs for both Velvet and Oases showing execution details and assembly progress.
+6. Logs folder: Includes run logs for both Velvet and Oases showing execution details and assembly progress.
 
 ### **Summary of Findings:**
 
