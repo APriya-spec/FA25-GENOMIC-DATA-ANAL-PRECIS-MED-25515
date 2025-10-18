@@ -13,47 +13,47 @@ All steps were performed on Indiana University’s Slate HPC system, using a Con
 
 ### **Requirements:**
 
-SRA-Toolkit – for downloading and converting data from NCBI (version: 3.1.1)
+1. SRA-Toolkit – for downloading and converting data from NCBI (version: 3.1.1)
 
-Velvet – for genome assembly from short reads (version: 1.2.10)
+2. Velvet – for genome assembly from short reads (version: 1.2.10)
 
-Oases – transcriptome assembler based on Velvet (version: 0.2.09)
+3. Oases – transcriptome assembler based on Velvet (version: 0.2.09)
 
-QUAST – for assembly quality evaluation (version: 5.2.0)
+4. QUAST – for assembly quality evaluation (version: 5.2.0)
 
-Conda – environment manager used to install and maintain software dependencies
+5. Conda – environment manager used to install and maintain software dependencies
 
 ### **Steps to Execute the Project:**
 
-Logged into the Slate HPC environment and loaded the Conda module.
+1. Logged into the Slate HPC environment and loaded the Conda module.
 
-Created a Conda environment named assignment_1_precision with sra-tools, velvet, and oases.
+2. Created a Conda environment named assignment_1_precision with sra-tools, velvet, and oases.
 
-Created a project directory named ecoli_asg1 with subfolders for data, outputs, logs, and results.
+3. Created a project directory named ecoli_asg1 with subfolders for data, outputs, logs, and results.
 
-Downloaded the Illumina short-read data (SRR21904868) from NCBI and converted it to paired FASTQ files.
+4. Downloaded the Illumina short-read data (SRR21904868) from NCBI and converted it to paired FASTQ files.
 
-Performed Velvet assemblies using k-mer values of 51, 61, 71, and 81.
+5. Performed Velvet assemblies using k-mer values of 51, 61, 71, and 81.
 
-Ran Oases assemblies with the same k-mer values to compare transcriptome-based performance.
+6. Ran Oases assemblies with the same k-mer values to compare transcriptome-based performance.
 
-Evaluated both assemblies using QUAST with a minimum contig length of 200 bp to remove small and unreliable fragments.
+7. Evaluated both assemblies using QUAST with a minimum contig length of 200 bp to remove small and unreliable fragments.
 
-Compared assembly metrics such as total length, N50, GC%, and number of contigs to determine the best performing k-mer size and assembler.
+8. Compared assembly metrics such as total length, N50, GC%, and number of contigs to determine the best performing k-mer size and assembler.
 
 ### **Generated Files:**
 
-Data folder: Contains paired-end FASTQ reads (SRR21904868_1.fastq and SRR21904868_2.fastq).
+1. Data folder: Contains paired-end FASTQ reads (SRR21904868_1.fastq and SRR21904868_2.fastq).
 
-Velvet Output folder: Includes assembled contigs and statistics for each k-mer tested (51, 61, 71, 81).
+2. Velvet Output folder: Includes assembled contigs and statistics for each k-mer tested (51, 61, 71, 81).
 
-Oases Output folder: Contains transcript assemblies and related results for each k-mer run.
+3. Oases Output folder: Contains transcript assemblies and related results for each k-mer run.
 
-QUAST Results: Contains detailed evaluation reports for Velvet and Oases assemblies.
+4. QUAST Results: Contains detailed evaluation reports for Velvet and Oases assemblies.
+https://github.com/APriya-spec/FA25-GENOMIC-DATA-ANAL-PRECIS-MED-25515/blob/Asg-1/oases_summary.zip
+https://github.com/APriya-spec/FA25-GENOMIC-DATA-ANAL-PRECIS-MED-25515/blob/Asg-1/velvet_summary.zip
 
-
-
-Logs folder: Includes run logs for both Velvet and Oases showing execution details and assembly progress.
+5. Logs folder: Includes run logs for both Velvet and Oases showing execution details and assembly progress.
 
 ### **Summary of Findings:**
 
