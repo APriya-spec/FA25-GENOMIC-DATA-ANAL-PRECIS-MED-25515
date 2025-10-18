@@ -50,6 +50,7 @@ All steps were performed on Indiana University’s Slate HPC system, using a Con
 3. Oases Output folder: Contains transcript assemblies and related results for each k-mer run.
 
 4. QUAST Results: Contains detailed evaluation reports for Velvet and Oases assemblies.
+5. 
 https://github.com/APriya-spec/FA25-GENOMIC-DATA-ANAL-PRECIS-MED-25515/blob/Asg-1/oases_summary.zip
 
 https://github.com/APriya-spec/FA25-GENOMIC-DATA-ANAL-PRECIS-MED-25515/blob/Asg-1/velvet_summary.zip
