@@ -91,30 +91,30 @@ quast oases_output/run_*/transcripts.fa -o quast_results/oases_summary --min-con
 
   ### Generated Files:
 
-data/ → contains paired FASTQ reads (SRR21904868_1.fastq, SRR21904868_2.fastq)
+- data/ → contains paired FASTQ reads (SRR21904868_1.fastq, SRR21904868_2.fastq)
 
-velvet_output/ → contains contigs for each k-mer (51, 61, 71, 81)
+- velvet_output/ → contains contigs for each k-mer (51, 61, 71, 81)
 
-oases_output/ → contains transcripts for each k-mer (51, 61, 71, 81)
+- oases_output/ → contains transcripts for each k-mer (51, 61, 71, 81)
 
-quast_results/ → includes evaluation reports:
+- quast_results/ → includes evaluation reports:
 
-Velvet QUAST Report
+- Velvet QUAST Report
 
-Oases QUAST Report
+- Oases QUAST Report
 
-logs/ → contains assembly log files for each k-mer run
+- logs/ → contains assembly log files for each k-mer run
 
-assembly_pipeline.sh → script containing all commands used for this workflow
+- assembly_pipeline.sh → script containing all commands used for this workflow
 
 ### Summary of Findings:
 
-Increasing k-mer size improved contiguity and assembly quality.
+- Increasing k-mer size improved contiguity and assembly quality.
 
-Velvet (k = 81) generated the most accurate assembly (closest to 4.78 Mb), while smaller k-mers produced fragmented results.
+- Velvet (k = 81) generated the most accurate assembly (closest to 4.78 Mb), while smaller k-mers produced fragmented results.
 
-Oases (k = 81) produced longer transcripts but redundant contigs due to transcriptome-style assembly.
+- Oases (k = 81) produced longer transcripts but redundant contigs due to transcriptome-style assembly.
 
-Both assemblers maintained consistent GC content around 50%, matching E. coli reference values.
+- Both assemblers maintained consistent GC content around 50%, matching E. coli reference values.
 
 
