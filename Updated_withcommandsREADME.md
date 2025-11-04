@@ -27,108 +27,121 @@ Conda – environment manager for reproducibility
 
 ## Step 1 — Load Conda and Create the Environment
   
-# Load the conda module on Slate HPC
+### Load the conda module on Slate HPC
 
 module load conda
 
-# Create a new conda environment for this assignment
+### Create a new conda environment for this assignment
 
 conda create -n assignment_1_precision sra-tools velvet oases -y
 
-# Activate the environment
+### Activate the environment
 
 conda activate assignment_1_precision
 
 ## Step 2 — Set Up Working Directories
 
-# Define the base directory 
+### Define the base directory 
 
 BASE_DIR=/N/slate/archee/ecoli_asg1
 
-# Create folders for each stage of the project
+### Create folders for each stage of the project
 
 mkdir -p $BASE_DIR/{data,velvet_output,oases_output,quast_results,logs,tmp}
 
-# Navigate into the main directory
+### Navigate into the main directory
 
 cd $BASE_DIR
 
 ## Step 3 — Download and Prepare Sequencing Data
 
-# Move to the data folder
+### Move to the data folder
 
 cd $BASE_DIR/data
 
-# Download the E. coli short-read data from NCBI SRA
+### Download the E. coli short-read data from NCBI SRA
 
 prefetch SRR21904868 --output-directory .
 
-# Convert SRA file to paired FASTQ files (forward/reverse)
+### Convert SRA file to paired FASTQ files (forward/reverse)
 
 fasterq-dump SRR21904868 --split-files --temp $BASE_DIR/tmp
 
-# List the FASTQ files to confirm
+### List the FASTQ files to confirm
 
 ls -lh SRR21904868_*.fastq
 
 ## Step 4 — Run Velvet Assemblies for Multiple k-mer Sizes
 
-# Move to the velvet output folder
+### Move to the velvet output folder
 
 cd $BASE_DIR/velvet_output
 
-# Run Velvet for k-mers 51, 61, 71, and 81
+### Run Velvet for k-mers 51, 61, 71, and 81
 
 for K in 51 61 71 81; do
-    echo "Running Velvet assembly for k = $K ..."
-    mkdir -p run_$K
-    velveth run_$K $K -fastq -shortPaired -separate \
-        $BASE_DIR/data/SRR21904868_1.fastq $BASE_DIR/data/SRR21904868_2.fastq
-    velvetg run_$K -exp_cov auto -cov_cutoff auto > $BASE_DIR/logs/velvet_$K.log 2>&1
+
+echo "Running Velvet assembly for k = $K ..."
+  
+mkdir -p run_$K
+    
+velveth run_$K $K -fastq -shortPaired -separate \
+  
+$BASE_DIR/data/SRR21904868_1.fastq $BASE_DIR/data/SRR21904868_2.fastq
+  
+velvetg run_$K -exp_cov auto -cov_cutoff auto > $BASE_DIR/logs/velvet_$K.log 2>&1
+
 done
 
 ## Step 5 — Run Oases Assemblies for the Same k-mer Sizes
 
-# Move to the oases output folder
+### Move to the oases output folder
 
 cd $BASE_DIR/oases_output
 
-# Run Oases for k-mers 51, 61, 71, and 81
+### Run Oases for k-mers 51, 61, 71, and 81
 
 for K in 51 61 71 81; do
-    echo "Running Oases assembly for k = $K ..."
-    mkdir -p run_$K
-    velveth run_$K $K -fastq -shortPaired -separate \
-        $BASE_DIR/data/SRR21904868_1.fastq $BASE_DIR/data/SRR21904868_2.fastq
-    velvetg run_$K -exp_cov auto -cov_cutoff auto
-    oases run_$K > $BASE_DIR/logs/oases_$K.log 2>&1
+
+echo "Running Oases assembly for k = $K ..."
+ 
+mkdir -p run_$K
+    
+velveth run_$K $K -fastq -shortPaired -separate \
+        
+$BASE_DIR/data/SRR21904868_1.fastq $BASE_DIR/data/SRR21904868_2.fastq
+    
+velvetg run_$K -exp_cov auto -cov_cutoff auto
+   
+oases run_$K > $BASE_DIR/logs/oases_$K.log 2>&1
+
 done
 
-### Step 6 — Evaluate Assemblies with QUAST
+## Step 6 — Evaluate Assemblies with QUAST
 
-# Move back to base directory
+### Move back to base directory
 
 cd $BASE_DIR
 
-# Run QUAST for Velvet assemblies
+### Run QUAST for Velvet assemblies
 
 quast velvet_output/run_*/contigs.fa -o quast_results/velvet_summary --min-contig 200
 
-# Run QUAST for Oases assemblies
+### Run QUAST for Oases assemblies
 
 quast oases_output/run_*/transcripts.fa -o quast_results/oases_summary --min-contig 200
 
 ### Step 7 — View QUAST Reports
 
-# View summary metrics for Velvet
+### View summary metrics for Velvet
 
 less quast_results/velvet_summary/report.txt
 
-# View summary metrics for Oases
+### View summary metrics for Oases
 
 less quast_results/oases_summary/report.txt
 
-### Step 8 — Summarize Best Assembly
+## Step 8 — Summarize Best Assembly
 
 echo "Optimal Assembly: Velvet (k = 81)"
 
