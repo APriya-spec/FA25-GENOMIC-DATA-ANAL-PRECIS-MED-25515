@@ -25,69 +25,118 @@ Conda – environment manager for reproducibility
 
 ### Steps to Execute the Project:
 
-1. Environment Setup
-
-- Load the Conda module on Slate HPC:
+## Step 1 — Load Conda and Create the Environment
   
+# Load the conda module on Slate HPC
+
 module load conda
 
-- Create and activate the environment:
-  
-conda create -n assignment_1_precision sra-tools velvet oases
+# Create a new conda environment for this assignment
+
+conda create -n assignment_1_precision sra-tools velvet oases -y
+
+# Activate the environment
 
 conda activate assignment_1_precision
 
-2. Directory Structure
+## Step 2 — Set Up Working Directories
 
-- Created a project folder named ecoli_asg1 with subfolders:
-  
-data/, velvet_output/, oases_output/, quast_results/, and logs/.
+# Define the base directory 
 
-3. Data Download and Preparation
+BASE_DIR=/N/slate/archee/ecoli_asg1
 
-- Downloaded sequencing reads from NCBI SRA using:
-  
-prefetch SRR21904868
+# Create folders for each stage of the project
 
-- Converted .sra to paired-end FASTQ files using:
-  
-fasterq-dump SRR21904868 --split-files
+mkdir -p $BASE_DIR/{data,velvet_output,oases_output,quast_results,logs,tmp}
 
-4. Genome Assembly with Velvet
+# Navigate into the main directory
 
-- Performed assemblies for multiple k-mer sizes: 51, 61, 71, and 81.
+cd $BASE_DIR
 
-- Example command:
+## Step 3 — Download and Prepare Sequencing Data
 
-velveth run_81 81 -fastq -shortPaired -separate SRR21904868_1.fastq SRR21904868_2.fastq
+# Move to the data folder
 
-velvetg run_81 -exp_cov auto -cov_cutoff auto
+cd $BASE_DIR/data
 
-5. Assembly with Oases
+# Download the E. coli short-read data from NCBI SRA
 
-- Repeated the assembly process using Oases for the same k-mer values.
+prefetch SRR21904868 --output-directory .
 
-- Example command:
+# Convert SRA file to paired FASTQ files (forward/reverse)
 
-velveth run_81 81 -fastq -shortPaired -separate SRR21904868_1.fastq SRR21904868_2.fastq
+fasterq-dump SRR21904868 --split-files --temp $BASE_DIR/tmp
 
-velvetg run_81 -exp_cov auto -cov_cutoff auto
+# List the FASTQ files to confirm
 
-oases run_81
+ls -lh SRR21904868_*.fastq
 
-6. Assembly Quality Evaluation (QUAST)
+## Step 4 — Run Velvet Assemblies for Multiple k-mer Sizes
 
-- Compared all assemblies using QUAST with a minimum contig size of 200 bp:
+# Move to the velvet output folder
+
+cd $BASE_DIR/velvet_output
+
+# Run Velvet for k-mers 51, 61, 71, and 81
+
+for K in 51 61 71 81; do
+    echo "Running Velvet assembly for k = $K ..."
+    mkdir -p run_$K
+    velveth run_$K $K -fastq -shortPaired -separate \
+        $BASE_DIR/data/SRR21904868_1.fastq $BASE_DIR/data/SRR21904868_2.fastq
+    velvetg run_$K -exp_cov auto -cov_cutoff auto > $BASE_DIR/logs/velvet_$K.log 2>&1
+done
+
+## Step 5 — Run Oases Assemblies for the Same k-mer Sizes
+
+# Move to the oases output folder
+
+cd $BASE_DIR/oases_output
+
+# Run Oases for k-mers 51, 61, 71, and 81
+
+for K in 51 61 71 81; do
+    echo "Running Oases assembly for k = $K ..."
+    mkdir -p run_$K
+    velveth run_$K $K -fastq -shortPaired -separate \
+        $BASE_DIR/data/SRR21904868_1.fastq $BASE_DIR/data/SRR21904868_2.fastq
+    velvetg run_$K -exp_cov auto -cov_cutoff auto
+    oases run_$K > $BASE_DIR/logs/oases_$K.log 2>&1
+done
+
+### Step 6 — Evaluate Assemblies with QUAST
+
+# Move back to base directory
+
+cd $BASE_DIR
+
+# Run QUAST for Velvet assemblies
 
 quast velvet_output/run_*/contigs.fa -o quast_results/velvet_summary --min-contig 200
 
+# Run QUAST for Oases assemblies
+
 quast oases_output/run_*/transcripts.fa -o quast_results/oases_summary --min-contig 200
 
-7. Result Comparison and Optimization
+### Step 7 — View QUAST Reports
 
-- Evaluated the QUAST reports to identify the optimal k-mer for each tool.
+# View summary metrics for Velvet
 
-- Determined Velvet (k=81) produced the most contiguous assembly, while Oases performed better for transcript reconstruction but included redundant regions.
+less quast_results/velvet_summary/report.txt
+
+# View summary metrics for Oases
+
+less quast_results/oases_summary/report.txt
+
+### Step 8 — Summarize Best Assembly
+
+echo "Optimal Assembly: Velvet (k = 81)"
+
+grep -E "N50|# contigs|Total length|Largest contig" \
+
+ $BASE_DIR/quast_results/velvet_summary/report.txt
+
+
 
   ### Generated Files:
 
