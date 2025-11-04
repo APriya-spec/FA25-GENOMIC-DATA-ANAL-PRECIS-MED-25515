@@ -28,7 +28,7 @@ Conda – environment manager for reproducibility
 1. Environment Setup
 
 - Load the Conda module on Slate HPC:
-- 
+  
 module load conda
 
 - Create and activate the environment:
@@ -99,9 +99,9 @@ quast oases_output/run_*/transcripts.fa -o quast_results/oases_summary --min-con
 
 - quast_results/ → includes evaluation reports:
 
-- Velvet QUAST Report
+  Velvet QUAST Report
 
-- Oases QUAST Report
+  Oases QUAST Report
 
 - logs/ → contains assembly log files for each k-mer run
 
