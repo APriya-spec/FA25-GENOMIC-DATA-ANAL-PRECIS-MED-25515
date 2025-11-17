@@ -1,8 +1,8 @@
 # Assignment 2 | miRNA Expression Analysis in SARS-CoV-2 Infected Cells
-# Programmer Name: Aruna Priya Cheekatla
+##  Programmer Name: Aruna Priya Cheekatla
 
-# Language of the scripts: Unix / Bash (alignment, QC, counting) and R (DESeq2 analysis)
-# Date: 11/16/2025
+##  Language of the scripts: Unix / Bash (alignment, QC, counting) and R (DESeq2 analysis)
+##  Date: 11/16/2025
 
 # Overview
 
@@ -140,5 +140,9 @@ featureCounts \
 featureCounts assigns aligned reads to gene features. The resulting gene_counts.txt file becomes the input for DESeq2 differential expression analysis.
 
 # PART 11 – Differential Expression Analysis (R Script)
+
+The R code for this part is given in below link.
+
+https://github.com/APriya-spec/FA25-GENOMIC-DATA-ANAL-PRECIS-MED-25515/blob/Asg-2/Janga%20asg2.R
 
 
